@@ -1,10 +1,17 @@
 import { Request, Response, Router } from "express";
-import { Register } from "../../controllers/accounts/auth";
+
+import { errorHandler } from "../../lib/handlers/errorHandler";
+import { 
+    Login, 
+    Register, 
+    TokenRefresh, 
+    TokenVerify 
+} from "../../controllers/root";
 
 const authRoutes = Router()
 
 // Register a user
-authRoutes.post("/register/", Register)
+authRoutes.post("/register/", errorHandler(Register))
 
 
 // Verify token sent to email after registration
@@ -12,15 +19,15 @@ authRoutes.post("/account-verify/", (req, res, next) => console.log("welcome to 
 
 
 // Login a user
-authRoutes.post("/login/", (req, res, next) => console.log("welcome to login routes"))
+authRoutes.post("/login/", errorHandler(Login))
 
 
 // Get a new access token with a refresh token
-authRoutes.post("/token/refresh/", (req, res, next) => console.log("token/refresh routes"))
+authRoutes.post("/token/refresh/", errorHandler(TokenRefresh))
 
 
 // Verify an access token.
-authRoutes.post("/token/verify/", (req, res, next) => console.log('token/verify routes'))
+authRoutes.post("/token/verify/", errorHandler(TokenVerify))
 
 
 // Request code for password reset which will be sent to the user's email
