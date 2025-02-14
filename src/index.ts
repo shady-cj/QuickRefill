@@ -1,11 +1,11 @@
-import express, { Request, Response } from "express"
-import { redisClient } from "./redis-init";
+import express from "express"
+import { PrismaClient } from "@prisma/client";
+import "./redis-init";
 import { rootRoutes } from "./routes/root";
 const app = express();
+app.use(express.json())
 
-app.get("/", (req: Request, res: Response) => {
-    res.send("hello world")
-})
 app.use(rootRoutes)
+export const prismaClient = new PrismaClient()
 
 app.listen(4000, ()=>console.log('working'))

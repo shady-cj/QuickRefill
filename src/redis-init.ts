@@ -21,7 +21,6 @@ redisClient.on('error', err => console.error(err));
         }
         
         // Test connection
-        await redisClient.set('name', 'mario')
         console.log('Successfully connected to Redis')
     } catch (error) {
         console.error('Failed to connect to Redis:', error)

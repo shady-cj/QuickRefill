@@ -4,7 +4,7 @@ import { userRoutes } from "./user";
 
 const accountRoutes = Router()
 
-accountRoutes.use("auth/", authRoutes)
-accountRoutes.use("user/", userRoutes)
+accountRoutes.use("/auth/", authRoutes)
+accountRoutes.use("/user/", userRoutes)
 
 export {accountRoutes}

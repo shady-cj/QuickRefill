@@ -13,9 +13,76 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Roles for the users
 enum Role {
   CUSTOMER
   RIDER
   VENDOR
   ADMIN
+}
+
+// Default user model
+model User {
+  id              String           @id @default(uuid()) @db.Uuid
+  role            Role             @default(CUSTOMER)
+  email           String           @unique
+  password        String
+  name            String
+  inviteCode      String?
+  publicKey       String?
+  address         String?          @db.Text
+  phoneNumber     String?
+  avatar          String?          @db.Text
+  emailVerified   Boolean          @default(false)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  customerProfile CustomerProfile? @relation("UserToCustomer")
+  vendorProfile   VendorProfile?   @relation("UserToVendor")
+  riderProfile    RiderProfile?    @relation("UserToRider")
+  document        Document? // It's a one to one field to ensure a user is associated to a document and no unnecessary document will be left fly around in the database
+}
+
+// customer profile
+model CustomerProfile {
+  id             String @id @default(uuid()) @db.Uuid
+  accountBalance BigInt
+  avgRating      Int
+  user           User   @relation("UserToCustomer", fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId         String @unique @db.Uuid
+}
+
+// rider profile
+model RiderProfile {
+  id                  String  @id @default(uuid()) @db.Uuid
+  accountBalance      BigInt
+  avgRating           Int
+  credentialsVerified Boolean @default(false)
+  user                User    @relation("UserToRider", fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId              String  @unique @db.Uuid
+}
+
+// vendor profile
+model VendorProfile {
+  id                  String  @id @default(uuid()) @db.Uuid
+  accountBalance      BigInt
+  avgRating           Int
+  credentialsVerified Boolean @default(false)
+  user                User    @relation("UserToVendor", fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId              String  @unique @db.Uuid
+}
+
+// user documents
+
+enum DocumentStatus {
+  VERIFIED
+  NOT_VERIFIED
+  PENDING
+}
+
+model Document {
+  id     Int            @id @default(autoincrement())
+  nin    String         @db.Text
+  status DocumentStatus @default(NOT_VERIFIED)
+  user   User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String         @unique @db.Uuid
 }
