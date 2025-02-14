@@ -7,7 +7,7 @@ import { generateAccessToken } from "../../../lib/utils/jwt/generateTokenPair";
 export const TokenRefresh = async (req: Request, res: Response, next: NextFunction) => {
     try {
 
-        z.object({refresh: z.string()}).parse(req.body)
+        await z.object({refresh: z.string()}).parseAsync(req.body)
     } catch (err: any) {
         throw new UnprocessableEntity("Unprocessable Entity", AppErrorCode.UNPROCESSABLE_ENTITY, err?.issues)
     }

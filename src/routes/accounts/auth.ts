@@ -2,8 +2,10 @@ import { Request, Response, Router } from "express";
 
 import { errorHandler } from "../../lib/handlers/errorHandler";
 import { 
+    AccountVerify,
     Login, 
     Register, 
+    RequestAccountVerify, 
     TokenRefresh, 
     TokenVerify 
 } from "../../controllers/root";
@@ -15,7 +17,11 @@ authRoutes.post("/register/", errorHandler(Register))
 
 
 // Verify token sent to email after registration
-authRoutes.post("/account-verify/", (req, res, next) => console.log("welcome to account verify route"))
+authRoutes.post("/account-verify/", errorHandler(AccountVerify))
+
+
+// Request email verification
+authRoutes.post("/request-account-verify", errorHandler(RequestAccountVerify))
 
 
 // Login a user

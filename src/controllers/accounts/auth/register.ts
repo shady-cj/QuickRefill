@@ -5,6 +5,7 @@ import { BadRequest } from "../../../exceptions/badRequests";
 import { AppErrorCode } from "../../../exceptions/root";
 import { UnprocessableEntity } from "../../../exceptions/validation";
 import { RegisterUserSchema } from "../../../schemas/user";
+import { sendOTP } from "../../../lib/utils/mail/otp";
 
 export const Register = async (req: Request, res: Response, next: NextFunction) => {
 
@@ -35,6 +36,7 @@ export const Register = async (req: Request, res: Response, next: NextFunction) 
         // console.log("new User", newUser);
 
         // after creating a user, send an email with an otp to verify.
+        await sendOTP(email)
         res.json(newUser)
     }
 

@@ -6,7 +6,7 @@ import { verifyToken } from "../../../lib/utils/jwt/verifyToken"
 
 export const TokenVerify = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        z.object({token: z.string()}).parse(req.body)
+        await z.object({token: z.string()}).parseAsync(req.body)
     } catch (err: any) {
         throw new UnprocessableEntity("Unprocessable Entity", AppErrorCode.UNPROCESSABLE_ENTITY, err?.issues)
     }
