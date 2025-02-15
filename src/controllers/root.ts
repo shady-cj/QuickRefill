@@ -4,7 +4,8 @@ import { TokenRefresh } from "./accounts/auth/token-refresh";
 import { TokenVerify } from "./accounts/auth/token-verify";
 import { RequestAccountVerify } from "./accounts/auth/request-account-verify";
 import { AccountVerify } from "./accounts/auth/account-verify";
-
+import { RequestPasswordReset } from "./accounts/auth/request-password-reset";
+import { PasswordReset } from "./accounts/auth/password-reset";
 
 export {
     Login, 
@@ -12,5 +13,7 @@ export {
     TokenRefresh,
     TokenVerify,
     RequestAccountVerify,
-    AccountVerify
+    AccountVerify,
+    RequestPasswordReset,
+    PasswordReset
 }

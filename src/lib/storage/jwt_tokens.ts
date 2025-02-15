@@ -3,18 +3,20 @@ import { UnauthorizedRequest } from "../../exceptions/unauthorizedRequests";
 import { redisClient } from "../../redis-init";
 import { accessTokenPayload } from "../types/payload";
 import { ACCESS_TOKEN_EXPIRES_IN } from "../utils/jwt/generateTokenPair";
+import bcrypt from "bcrypt"
 
 export const storeAccessToken = async (accessToken: string, userId: string) => {
     const key = `user:access-token:${userId}`
-    await redisClient.set(key, accessToken, {EX: ACCESS_TOKEN_EXPIRES_IN - 60}) // expires in 59 minutes 
+    const hashedAccessToken = await bcrypt.hash(accessToken, 10)
+    await redisClient.set(key, hashedAccessToken, {EX: ACCESS_TOKEN_EXPIRES_IN - 60}) // expires in 59 minutes 
 }
 
 export const verifyAccessToken = async(userId: string) => {
     const key = `user:access-token:${userId}`
     
     if (await redisClient.exists(key)) {
-        const accessToken = await redisClient.get(key)
-        return accessToken
+        const hashedAccessToken = await redisClient.get(key)
+        return hashedAccessToken
     } 
     throw new UnauthorizedRequest("invalid token", AppErrorCode.INVALID_TOKEN)
 

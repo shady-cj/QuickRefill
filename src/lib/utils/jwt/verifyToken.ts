@@ -4,6 +4,8 @@ import { UnauthorizedRequest } from "../../../exceptions/unauthorizedRequests";
 import { AppErrorCode } from "../../../exceptions/root";
 import { accessTokenPayload } from "../../types/payload";
 import { verifyAccessToken } from "../../storage/jwt_tokens";
+import bcrypt from "bcrypt"
+
 
 export const verifyToken = async (token: string, type: "access" | "refresh" = "access"): Promise<accessTokenPayload | never> => {
     const secret = type === "access" ? JWT_ACCESS_SECRET : type === "refresh" ? JWT_REFRESH_SECRET : null
@@ -11,8 +13,8 @@ export const verifyToken = async (token: string, type: "access" | "refresh" = "a
     try {
         const payload = jwt.verify(token, secret) as accessTokenPayload;
         if (type === "access") {
-            const accessToken = await verifyAccessToken(payload.userId);
-            if (accessToken === token)
+            const hashedAccessToken = await verifyAccessToken(payload.userId);
+            if (hashedAccessToken && await bcrypt.compare(token, hashedAccessToken))
                 return payload
             throw jwt.TokenExpiredError
         }
