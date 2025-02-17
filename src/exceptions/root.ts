@@ -23,3 +23,5 @@ export enum AppErrorCode {
     UNPROCESSABLE_ENTITY = 5001,
     INTERNAL_EXCEPTION = 3001,
 }
+
+// AppErrorCode.USER_NOT_FOUND

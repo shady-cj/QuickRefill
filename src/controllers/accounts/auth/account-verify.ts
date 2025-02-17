@@ -16,7 +16,7 @@ export const AccountVerify = async(req: Request, res: Response, next: NextFuncti
         throw new UnprocessableEntity("Unprocessable Entity", AppErrorCode.UNPROCESSABLE_ENTITY, err?.issues)
     }
     const {email, otp} = req.body
-    console.log('got here', email, otp)
+    // console.log('got here', email, otp)
 
     const user = await prismaClient.user.findUnique({
         where: {

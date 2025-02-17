@@ -8,3 +8,6 @@ accountRoutes.use("/auth/", authRoutes)
 accountRoutes.use("/user/", userRoutes)
 
 export {accountRoutes}
+
+// /auth/register
+// /user/me.

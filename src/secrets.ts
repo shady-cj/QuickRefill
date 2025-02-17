@@ -10,3 +10,4 @@ export const SMTP_PORT = process.env.SMTP_PORT
 export const SMTP_USER = process.env.SMTP_USER
 export const SMTP_PASSWORD = process.env.SMTP_PASSWORD
 export const EMAIL_FROM = process.env.EMAIL_FROM
+export const CORS_ORIGINS = process.env.CORS_ORIGINS?.split(',') || ["http://localhost:4000"]

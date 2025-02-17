@@ -32,6 +32,8 @@ export const validateResetToken = async (email: string, token: string) => {
     
 }
 
+
+// www.quickref.com
 export const sendPasswordResetToken = async (email: string, name: string) => {
     const token = await createResetToken(email)
     const link = `http://127.0.0.1:4000/reset-password?token=${token}`

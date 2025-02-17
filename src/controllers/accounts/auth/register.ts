@@ -22,7 +22,7 @@ export const Register = async (req: Request, res: Response, next: NextFunction) 
         }
     }) 
     if (user) {
-        next(new BadRequest("User Already Exists", AppErrorCode.USER_ALREADY_EXIST))
+        throw new BadRequest("User Already Exists", AppErrorCode.USER_ALREADY_EXIST)
     } else {
         const hashedPassword = await bcrypt.hash(password, 10)
         const newUser = await prismaClient.user.create({
