@@ -5,6 +5,8 @@ import { accessTokenPayload } from "../types/payload";
 import { ACCESS_TOKEN_EXPIRES_IN } from "../utils/jwt/generateTokenPair";
 import bcrypt from "bcrypt"
 
+// {1, 2, 4}
+
 export const storeAccessToken = async (accessToken: string, userId: string) => {
     const key = `user:access-token:${userId}`
     const hashedAccessToken = await bcrypt.hash(accessToken, 10)

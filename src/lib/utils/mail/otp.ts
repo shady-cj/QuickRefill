@@ -3,8 +3,10 @@ import { UnauthorizedRequest } from "../../../exceptions/unauthorizedRequests";
 import { redisClient } from "../../../redis-init";
 import { sendMail } from "../../../services/email";
 
-export const generateOTP = Math.floor(100000 + Math.random() * 900000).toString();
+export const generateOTP = Math.floor(1000 + Math.random() * 900000).toString();
 
+
+// 278302
 export const sendOTP = async (email: string) => {
     const otp = generateOTP
     const key = `user:${email}:otp`

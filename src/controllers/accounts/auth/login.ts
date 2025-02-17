@@ -35,7 +35,7 @@ export const Login = async (req: Request, res: Response, next: NextFunction) => 
         role: user.role,
 
     }
-    const token = await generateTokenPair(payload)
+    const token = await generateTokenPair(payload) // refresh and access token
     res.json(token)
     
 }
