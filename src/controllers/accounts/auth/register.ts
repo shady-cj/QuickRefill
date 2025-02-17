@@ -23,7 +23,10 @@ export const Register = async (req: Request, res: Response, next: NextFunction) 
         }
     }) 
     if (user) {
-        throw new BadRequest("User Already Exists", AppErrorCode.USER_ALREADY_EXIST)
+        throw new BadRequest(
+            "User Already Exists",
+            AppErrorCode.USER_ALREADY_EXIST
+        )
     } else {
         let newUser;
         if (isSocialAccount) {
@@ -34,7 +37,8 @@ export const Register = async (req: Request, res: Response, next: NextFunction) 
                     isSocialAccount,
                     socialAccountProvider,
                     role,
-                    address: address || null
+                    address: address || null,
+                    emailVerified: true
                 }
             })
         } else {

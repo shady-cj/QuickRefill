@@ -24,9 +24,13 @@ export const Login = async (req: Request, res: Response, next: NextFunction) => 
         throw new UnauthorizedRequest("Incorrect email and/or password", AppErrorCode.USER_DOES_NOT_EXIST)
     } 
 
-    const passwordMatch = await bcrypt.compare(password, user.password)
-    if (!passwordMatch)
-        throw new UnauthorizedRequest("Incorrect email and/or password", AppErrorCode.USER_DOES_NOT_EXIST)
+    if (!user.isSocialAccount) {
+        if (!password)
+            throw new UnauthorizedRequest("provide a password to authenticate this account", AppErrorCode.USER_DOES_NOT_EXIST)
+        const passwordMatch = await bcrypt.compare(password, user.password)
+        if (!passwordMatch)
+            throw new UnauthorizedRequest("Incorrect email and/or password", AppErrorCode.USER_DOES_NOT_EXIST)
+    }
 
     // Login with jwt
     const payload = {
