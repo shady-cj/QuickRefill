@@ -21,28 +21,35 @@ enum Role {
   ADMIN
 }
 
+enum SocialAccountProvider {
+  FACEBOOK
+  GOOGLE
+}
+
 // Default user model
 model User {
-  id                 String              @id @default(uuid()) @db.Uuid
-  role               Role                @default(CUSTOMER)
-  email              String              @unique
-  password           String
-  name               String
-  inviteCode         String?
-  publicKey          String?
-  address            String?             @db.Text
-  phoneNumber        String?
-  avatar             String?             @db.Text
-  emailVerified      Boolean             @default(false)
-  createdAt          DateTime            @default(now())
-  updatedAt          DateTime            @updatedAt
-  walletTransactions WalletTransaction[]
-  orders             Order[]
+  id                    String                 @id @default(uuid()) @db.Uuid
+  role                  Role                   @default(CUSTOMER)
+  email                 String                 @unique
+  password              String?
+  name                  String
+  inviteCode            String?
+  publicKey             String?
+  address               String?                @db.Text
+  isSocialAccount       Boolean                @default(false)
+  socialAccountProvider SocialAccountProvider?
+  phoneNumber           String?
+  avatar                String?                @db.Text
+  emailVerified         Boolean                @default(false)
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  walletTransactions    WalletTransaction[]
+  orders                Order[]
   // payOnDeliveryOrders PayOnDeliveryOrder[]
-  customerProfile    CustomerProfile?    @relation("UserToCustomer")
-  vendorProfile      VendorProfile?      @relation("UserToVendor")
-  riderProfile       RiderProfile?       @relation("UserToRider")
-  document           Document? // It's a one to one field to ensure a user is associated to a document and no unnecessary document will be left fly around in the database
+  customerProfile       CustomerProfile?       @relation("UserToCustomer")
+  vendorProfile         VendorProfile?         @relation("UserToVendor")
+  riderProfile          RiderProfile?          @relation("UserToRider")
+  document              Document? // It's a one to one field to ensure a user is associated to a document and no unnecessary document will be left fly around in the database
 }
 
 // customer profile

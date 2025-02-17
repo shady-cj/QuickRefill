@@ -40,7 +40,7 @@ export const PasswordReset = async(req: Request, res: Response, next: NextFuncti
                 password: newPasswordHash
             }
         })
-        res.json({"status": "successful", "message": "password reset successful"})
+        res.json({"status": "Successful", "message": "Password reset successful"})
     } else {
         throw new UnauthorizedRequest("Invalid reset token", AppErrorCode.INVALID_TOKEN)
     }

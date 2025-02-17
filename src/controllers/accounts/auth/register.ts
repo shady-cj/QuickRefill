@@ -7,6 +7,7 @@ import { UnprocessableEntity } from "../../../exceptions/validation";
 import { RegisterUserSchema } from "../../../schemas/user";
 import { sendOTP } from "../../../lib/utils/mail/otp";
 
+
 export const Register = async (req: Request, res: Response, next: NextFunction) => {
 
     try {
@@ -15,7 +16,7 @@ export const Register = async (req: Request, res: Response, next: NextFunction) 
         throw new UnprocessableEntity("Unprocessable Entity", AppErrorCode.UNPROCESSABLE_ENTITY, err?.issues)
     }
 
-    const {email, password, name, role} = req.body
+    const {email, password, name, role, isSocialAccount, socialAccountProvider, address} = req.body
     const user = await prismaClient.user.findUnique({
         where: {
             email: email
@@ -24,20 +25,36 @@ export const Register = async (req: Request, res: Response, next: NextFunction) 
     if (user) {
         throw new BadRequest("User Already Exists", AppErrorCode.USER_ALREADY_EXIST)
     } else {
-        const hashedPassword = await bcrypt.hash(password, 10)
-        const newUser = await prismaClient.user.create({
-            data: {
-                email: email,
-                password: hashedPassword,
-                name: name,
-                role: role
-            }
-        })
-        // console.log("new User", newUser);
+        let newUser;
+        if (isSocialAccount) {
+            newUser = await prismaClient.user.create({
+                data: {
+                    email,
+                    name,
+                    isSocialAccount,
+                    socialAccountProvider,
+                    role,
+                    address: address || null
+                }
+            })
+        } else {
 
-        // after creating a user, send an email with an otp to verify.
-        await sendOTP(email)
-        res.json(newUser)
+            const hashedPassword = await bcrypt.hash(password, 10)
+            newUser = await prismaClient.user.create({
+                data: {
+                    email,
+                    password: hashedPassword,
+                    name,
+                    role, 
+                    address: address || null
+                }
+            })
+            // console.log("new User", newUser);
+    
+            // after creating a user, send an email with an otp to verify.
+            await sendOTP(email)
+        }
+        res.status(201).json(newUser)
     }
 
   

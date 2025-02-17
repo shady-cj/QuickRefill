@@ -6,30 +6,10 @@ import { PrismaClient } from "@prisma/client";
 import "./redis-init";
 import { rootRoutes } from "./routes/root";
 import { CustomErrorMiddleware, InternalErrorMiddleware } from "./middlewares/errors";
-
 import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUI from "swagger-ui-express";
+
 import { API_HOST, API_PORT, CORS_ORIGINS } from "./secrets";
-
-// swagger ui initializations 
-const options = {
-    failOnErrors: true, // Whether or not to throw when parsing errors. Defaults to false.
-    definition: {
-      openapi: '3.0.0',
-      info: {
-        title: 'Quicrefill rest api',
-        version: '1.0.0',
-      },
-      servers: [
-        {
-            api: `http://${API_HOST}:${API_PORT}`
-        }
-      ]
-    },
-    apis: ['./routes*.ts'],
-  };
-  
-const openapiSpecification = swaggerJSDoc(options);
-
 
 const app = express();
 app.use(express.json())
@@ -50,6 +30,29 @@ app.use(limiter);
 app.use(cors({
   origin: CORS_ORIGINS
 }))
+
+
+// swagger ui initializations 
+const options = {
+    failOnErrors: true, // Whether or not to throw when parsing errors. Defaults to false.
+    definition: {
+      openapi: '3.0.0',
+      info: {
+        title: 'Quicrefill Rest API Documentation',
+        version: '1.0.0',
+      },
+      servers: [
+        {
+            url: `http://${API_HOST}:${API_PORT}/`
+        }
+      ]
+    },
+    apis: ['./src/routes/**/*.ts'],
+  };
+  
+const openapiSpecification = swaggerJSDoc(options);
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(openapiSpecification))
+
 
 
 

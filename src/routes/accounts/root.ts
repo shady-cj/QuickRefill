@@ -1,11 +1,11 @@
 import { Router } from "express";
 import { authRoutes } from "./auth";
-import { userRoutes } from "./user";
+import { userRoutes } from "./profile";
 
 const accountRoutes = Router()
 
 accountRoutes.use("/auth/", authRoutes)
-accountRoutes.use("/user/", userRoutes)
+accountRoutes.use("/profile/", userRoutes)
 
 export {accountRoutes}
 
