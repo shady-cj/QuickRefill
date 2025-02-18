@@ -56,14 +56,42 @@ export const Register = async (req: Request, res: Response, next: NextFunction) 
                 }
             })
             // console.log("new User", newUser);
-    
             // after creating a user, send an email with an otp to verify.
             await sendOTP(email)
         }
+        await createProfileForRole(role, newUser.id)
+           
         res.status(201).json(newUser)
     }
 
-  
-    
+}
+
+const createProfileForRole = async (role: "CUSTOMER" | "ADMIN" | "DELIVERY_REP" | "VENDOR", userId: string) => {
+    let clientProfileModel: any;
+    switch (role) {
+        case "CUSTOMER":
+            clientProfileModel = prismaClient.customerProfile
+            break
+        case "DELIVERY_REP":
+            clientProfileModel = prismaClient.deliveryRepProfile
+            break
+        case "VENDOR":
+            clientProfileModel = prismaClient.vendorProfile
+            break;
+        default:
+            clientProfileModel = prismaClient.customerProfile
+           
+    }
+    await clientProfileModel.create({
+        data: {
+            accountBalance: 0.00,
+            avgRating: 0.0,
+            user: {
+                connect: {
+                    id: userId
+                }
+            }
+        }
+    })
 }
 

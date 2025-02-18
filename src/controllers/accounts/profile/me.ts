@@ -7,6 +7,11 @@ export const Me = async (req: AuthenticatedRequest, res: Response, next: NextFun
     const userProfile = await prismaClient.user.findUnique({
         where: {
             id: req.user?.id
+        },
+        include: {
+            vendorProfile: req.user?.role === "VENDOR",
+            customerProfile: req.user?.role === "CUSTOMER",
+            deliveryRepProfile: req.user?.role === "DELIVERY_REP"
         }
     })
 
