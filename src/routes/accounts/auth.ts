@@ -25,7 +25,7 @@ const authRoutes = Router()
  *                      type: string
  *                  role:
  *                      type: string
- *                      enum: ['CUSTOMER', 'VENDOR', 'ADMIN', 'RIDER']
+ *                      enum: ['CUSTOMER', 'VENDOR', 'ADMIN', 'DELIVERY_REP']
  *                      description: Roles is from one of those.
  *                  email:
  *                      type: string
@@ -85,13 +85,15 @@ const authRoutes = Router()
  *                  email: 
  *                      type: string
  *                  password:
- *                      type: string
+ *                      oneOf:
+ *                          - type: string
+ *                          - type: "null"
  *                      description: password must be minimum of 6 characters (don't pass a password if isSocialLogin is true)
  *                  name:
  *                      type: string
  *                  role:
  *                      type: string
- *                      enum: ['CUSTOMER', 'VENDOR', 'ADMIN', 'RIDER']
+ *                      enum: ['CUSTOMER', 'VENDOR', 'ADMIN', 'DELIVERY_REP']
  *                  isSocialAccount:
  *                      type: boolean
  *                      description: if registration is through social logins (google, facebook)
@@ -100,13 +102,13 @@ const authRoutes = Router()
  *                      enum: ['FACEBOOK', 'GOOGLE']
  *                      description: The provider for social login (Don't provider if account is not through social accounts)
  *                  address:
- *                      type: string
- *              
- * 
- *                          
- *                      
- *                   
- *                  
+ *                      oneOf:
+ *                          - type: "null"
+ *                          - type: string
+ *                  phoneNumber:
+ *                      oneOf:
+ *                          - type: "null"
+ *                          - type: string
  */
 
 /**

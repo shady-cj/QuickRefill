@@ -6,7 +6,7 @@ import { RequestAccountVerify } from "./accounts/auth/request-account-verify";
 import { AccountVerify } from "./accounts/auth/account-verify";
 import { RequestPasswordReset } from "./accounts/auth/request-password-reset";
 import { PasswordReset } from "./accounts/auth/password-reset";
-
+import { Me } from "./accounts/profile/me";
 export {
     Login, 
     Register,
@@ -15,5 +15,6 @@ export {
     RequestAccountVerify,
     AccountVerify,
     RequestPasswordReset,
-    PasswordReset
+    PasswordReset,
+    Me
 }

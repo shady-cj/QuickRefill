@@ -11,10 +11,11 @@ export const RegisterUserSchema = z.object({
         invalid_type_error: "Name must be a string",
     }),
     password: z.string().min(6, { message: "Password must atleast be 6 characters long" }).optional(),
-    role: z.enum(["ADMIN", "CUSTOMER", "RIDER", "VENDOR"]),
+    role: z.enum(["ADMIN", "CUSTOMER", "DELIVERY_REP", "VENDOR"]),
     isSocialAccount: z.boolean(),
     socialAccountProvider: z.enum(["FACEBOOK", "GOOGLE"]).optional(),
-    address: z.string().optional()
+    address: z.string().optional(),
+    phoneNumber: z.string().optional()
 }).superRefine((data, ctx) => {
     if (!data.isSocialAccount) {
         // If not a social account, password is required

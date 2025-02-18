@@ -16,7 +16,7 @@ export const Register = async (req: Request, res: Response, next: NextFunction) 
         throw new UnprocessableEntity("Unprocessable Entity", AppErrorCode.UNPROCESSABLE_ENTITY, err?.issues)
     }
 
-    const {email, password, name, role, isSocialAccount, socialAccountProvider, address} = req.body
+    const {email, password, name, role, isSocialAccount, socialAccountProvider, address, phoneNumber} = req.body
     const user = await prismaClient.user.findUnique({
         where: {
             email: email
@@ -38,6 +38,7 @@ export const Register = async (req: Request, res: Response, next: NextFunction) 
                     socialAccountProvider,
                     role,
                     address: address || null,
+                    phoneNumber: phoneNumber || null,
                     emailVerified: true
                 }
             })
@@ -50,7 +51,8 @@ export const Register = async (req: Request, res: Response, next: NextFunction) 
                     password: hashedPassword,
                     name,
                     role, 
-                    address: address || null
+                    address: address || null,
+                    phoneNumber: phoneNumber || null
                 }
             })
             // console.log("new User", newUser);

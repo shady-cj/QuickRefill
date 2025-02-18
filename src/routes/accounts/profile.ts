@@ -1,15 +1,12 @@
-import { Router } from "express";
+import { NextFunction, Request, Response, Router } from "express";
+import { Authentication } from "../../middlewares/authentication";
+import { errorHandler } from "../../lib/handlers/errorHandler";
+import { AuthenticatedRequest } from "../../lib/types/auth";
+import { Me } from "../../controllers/root";
 
 const userRoutes = Router()
 
 
-userRoutes.get('/me/', (req, res, next) => {
-    console.log("user me route")
-    res.json([{
-        "message": "you got the user profile right here.",
-        "status": "successful",
-        "number": 24
-    }])
-})
+userRoutes.get('/me/',[errorHandler(Authentication)], errorHandler(Me))
 
 export { userRoutes }
