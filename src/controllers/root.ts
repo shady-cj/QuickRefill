@@ -7,6 +7,7 @@ import { AccountVerify } from "./accounts/auth/account-verify";
 import { RequestPasswordReset } from "./accounts/auth/request-password-reset";
 import { PasswordReset } from "./accounts/auth/password-reset";
 import { Me } from "./accounts/profile/me";
+import { ProfileUpdate } from "./accounts/profile/profile-update";
 export {
     Login, 
     Register,
@@ -16,5 +17,6 @@ export {
     AccountVerify,
     RequestPasswordReset,
     PasswordReset,
-    Me
+    Me,
+    ProfileUpdate
 }

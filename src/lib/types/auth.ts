@@ -1,8 +1,9 @@
 import { Request } from "express"
+import { role } from "./payload"
 export type RequestUser = {
     id: string,
     email: string,
-    role: "ADMIN" | "CUSTOMER" | "VENDOR" | "DELIVERY_REP"
+    role: role
 }
 
 export interface AuthenticatedRequest extends Request {
