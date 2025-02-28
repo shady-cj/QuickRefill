@@ -9,6 +9,7 @@ import { PasswordReset } from "./accounts/auth/password-reset";
 import { Me } from "./accounts/profile/me";
 import { ProfileUpdate } from "./accounts/profile/profile-update";
 import { GetFeedbacks, PostFeedback } from "./support/feedback";
+import { GetOrderFeedbacks, CreateOrderFeedback } from "./reviews/orderFeedback";
 export {
     Login, 
     Register,
@@ -21,5 +22,7 @@ export {
     Me,
     ProfileUpdate, 
     GetFeedbacks,
-    PostFeedback
+    PostFeedback,
+    GetOrderFeedbacks,
+    CreateOrderFeedback
 }

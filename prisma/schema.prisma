@@ -44,7 +44,6 @@ model User {
   createdAt             DateTime               @default(now())
   updatedAt             DateTime               @updatedAt
   walletTransactions    WalletTransaction[]
-  orders                Order[]
   // payOnDeliveryOrders PayOnDeliveryOrder[]
   customerProfile       CustomerProfile?       @relation("UserToCustomer")
   vendorProfile         VendorProfile?         @relation("UserToVendor")
@@ -61,6 +60,14 @@ model Feedback {
   createdAt DateTime @default(now())
 }
 
+model OrderReview {
+  id        String   @id @default(uuid()) @db.Uuid
+  comment   String   @db.Text
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  orderId   Int      @unique
+  createdAt DateTime @default(now())
+}
+
 // customer profile
 model CustomerProfile {
   id             String  @id @default(uuid()) @db.Uuid
@@ -68,6 +75,7 @@ model CustomerProfile {
   avgRating      Decimal @db.Decimal(2, 1)
   user           User    @relation("UserToCustomer", fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId         String  @unique @db.Uuid
+  orders         Order[]
 }
 
 // Delivery Rep profile
@@ -88,6 +96,7 @@ model VendorProfile {
   credentialsVerified Boolean @default(false)
   user                User    @relation("UserToVendor", fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId              String  @unique @db.Uuid
+  orders              Order[]
 }
 
 // user documents
@@ -156,8 +165,6 @@ model GasSize {
 
 model Order {
   id                  Int                  @id @default(autoincrement())
-  user                User                 @relation(fields: [userId], references: [id])
-  userId              String               @db.Uuid
   station             GasStation           @relation(fields: [stationId], references: [id])
   stationId           Int                  @unique
   transactions        WalletTransaction[]
@@ -169,6 +176,11 @@ model Order {
   amountDue           Decimal              @db.Decimal(10, 2)
   orderStatus         TransactionStatus    @default(PENDING)
   createdAt           DateTime             @default(now())
+  customer            CustomerProfile      @relation(fields: [customerId], references: [id])
+  vendor              VendorProfile        @relation(fields: [vendorId], references: [id])
+  vendorId            String               @unique @db.Uuid
+  customerId          String               @unique @db.Uuid
+  reviews             OrderReview[]
 }
 
 model PayOnDeliveryOrder {
