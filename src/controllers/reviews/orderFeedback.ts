@@ -55,7 +55,8 @@ export const CreateOrderFeedback = async (req: AuthenticatedRequest, res: Respon
     try {
         const result = await prismaClient.order.update({
           where: {
-            id: orderId
+            id: orderId,
+            customerId: req.user?.id
           },
           data: {
             // Only update if vendorId matches
